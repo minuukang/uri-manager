@@ -1,10 +1,13 @@
 {
   "name": "uri-manager",
   "version": "0.0.1",
-  "description": "Create URI/Deeplink schema and serialize type safe",
-  "main": "index.js",
+  "description": "Create URI schema and serialize type safe",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist/**/*"],
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",

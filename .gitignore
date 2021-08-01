@@ -5,3 +5,4 @@ node_modules/
 .settings/
 npm-debug.log*
 lerna-debug.log
+dist/
