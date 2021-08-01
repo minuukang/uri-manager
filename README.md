@@ -54,6 +54,32 @@ const productDetail = new URISchema<ParamsFromPath<'/product/:productId(\\d+)'> 
 productDetail.serialize({ productId: 10, tag: 'bar' }); // ✅ "/product/10?tag=bar"
 ```
 
+### Using `defaultParams` to setting params
+
+```ts
+import { URISchema } from 'uri-manager';
+
+const filter = new URISchema({
+  template: '/filter/:category?',
+  defaultParams: {
+    category: 'ALL'
+  }
+});
+
+filter.serialize(); // ✅ "/filter/ALL"
+filter.serialize({ category: 'FEATURES' }); // ✅ "/filter/FEATURES"
+```
+
+### Using `baseSchema` to create app schema
+
+```ts
+import { URISchema } from 'uri-manager';
+
+const viewSchema = new URISchema<{ view: string }>({ baseSchema: 'weverseshop://weverseshop.benx.co' });
+
+viewSchema.serialize({ view: 'noticeDetail' }); // ✅ "weverseshop://weverseshop.benx.co/?view=noticeDetail"
+```
+
 ### Integration with `react-router`
 
 ```tsx
