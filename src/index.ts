@@ -1,3 +1,1 @@
-export function main () {
-  return 'uri-manager';
-}
+export * from './URISchema';
