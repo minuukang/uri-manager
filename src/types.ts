@@ -15,7 +15,7 @@ type ParseTokenRequired<Token extends string> =
     ? { required: false } & ParseTokenGroup<Name>
     : { required: true } & ParseTokenGroup<Token>;
 
-export type GetParamsTokenFromPath<Path extends string> = {
+type GetParamsTokenFromPath<Path extends string> = {
   [key in Split<Path, '/'>[number]]: key extends `:${infer Token}`
     ? ParseTokenRequired<Token>
     : never;
