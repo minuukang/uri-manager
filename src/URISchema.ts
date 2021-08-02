@@ -11,7 +11,7 @@ interface URISchemaOptions<T extends string, P extends Params> {
 }
 
 interface URISchemaConstructor {
-  new<T extends string = string, P extends Params = ParamsFromPath<T>>(options: URISchemaOptions<T, P> | T): URISchema<P>;
+  new<T extends string, P extends Params = ParamsFromPath<T>>(options: URISchemaOptions<T, P> | T): URISchema<P>;
   new<P extends Params>(options: URISchemaOptions<string, P> | string): URISchema<P>;
 }
 

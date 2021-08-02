@@ -24,6 +24,6 @@ type GetParamsTokenFromPath<Path extends string> = {
 export type ParamsFromPath<
   Path extends string,
   Tokens extends { name: string; required: boolean; value: unknown; } = GetParamsTokenFromPath<Path>
-> = Tokens extends never ? never :
+> =
   & { [key in Extract<Tokens, { required: true }>['name']]: Extract<Tokens, { name: key }>['value'] }
   & { [key in Extract<Tokens, { required: false }>['name']]?: Extract<Tokens, { name: key }>['value'] };
