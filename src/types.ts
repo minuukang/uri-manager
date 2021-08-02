@@ -15,11 +15,9 @@ type ParseTokenRequired<Token extends string> =
     ? { required: false } & ParseTokenGroup<Name>
     : { required: true } & ParseTokenGroup<Token>;
 
-type GetParamsTokenFromPath<Path extends string> = {
-  [key in Split<Path, '/'>[number]]: key extends `:${infer Token}`
-    ? ParseTokenRequired<Token>
-    : never;
-}[Split<Path, '/'>[number]];
+type FilterTokenPath<Path extends string> = Path extends `:${infer Token}` ? Token : never;
+
+type GetParamsTokenFromPath<Path extends string> = ParseTokenRequired<FilterTokenPath<Split<Path, '/'>[number]>>;
 
 export type ParamsFromPath<
   Path extends string,
