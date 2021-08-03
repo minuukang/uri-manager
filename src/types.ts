@@ -3,11 +3,11 @@ type Split<Str extends string, Sep extends string> =
     ? [Left, ...Split<Right, Sep>]
     : [Str];
 
-type ParseTokenValue<Value extends string> = Value extends '\\d+' ? number : Split<Value, '|'>[number];
+type ParseTokenValue<Value extends string> = Value extends '\\d+' ? number : Value;
 
 type ParseTokenGroup<Token extends string> =
   Token extends `${infer Name}(${infer Group})`
-    ? { name: Name; value: ParseTokenValue<Group> }
+    ? { name: Name; value: ParseTokenValue<Split<Group, '|'>[number]> }
     : { name: Token; value: string; };
 
 type ParseTokenRequired<Token extends string> =
