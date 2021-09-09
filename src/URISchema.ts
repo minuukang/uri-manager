@@ -16,12 +16,13 @@ interface URISchemaConstructor {
 }
 
 export interface URISchema<P extends Params> {
+  template: string;
   match(path: string): P | null;
   serialize(...[params]: Partial<P> extends P ? [P?] : [P]): string;
 }
 
 export const URISchema: URISchemaConstructor = class {
-  public readonly template?: string;
+  public readonly template: string = '/';
   protected readonly baseSchema?: string;
   protected readonly defaultParams?: Partial<Params>;
 
@@ -34,7 +35,7 @@ export const URISchema: URISchemaConstructor = class {
       this.template = options;
     } else if (options && typeof options === 'object') {
       const { template, baseSchema, defaultParams } = options as URISchemaOptions<string, Params>;
-      this.template = template;
+      template && (this.template = template);
       this.baseSchema = baseSchema;
       this.defaultParams = defaultParams;
     }
