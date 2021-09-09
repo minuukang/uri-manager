@@ -1,10 +1,12 @@
 {
   "name": "uri-manager",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Create URI schema and serialize type safe",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist/**/*"],
+  "files": [
+    "dist/**/*"
+  ],
   "scripts": {
     "test": "jest",
     "build": "tsc"
