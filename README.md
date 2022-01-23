@@ -1,7 +1,9 @@
 # uri-manager
 
+![image](https://user-images.githubusercontent.com/7782413/150670816-8eefeab9-d2e5-4309-87aa-2742709a960b.png)
+
 URI serialize and match data, use safety type!
-Successfully integration to (react-router-v6)[https://reactrouter.com/docs/en/v6]!
+Successfully integration to [react-router-v6](https://reactrouter.com/docs/en/v6)!
 
 ## Example
 
@@ -10,7 +12,7 @@ import { URISchema } from 'uri-manager';
 
 const product = new URISchema('/product');
 const productList = product.createSubPath<{ search?: string; }>('/list');
-const productDetail = product.createSubPath('/product/:productId');
+const productDetail = product.createSubPath('/:productId');
 
 // serialize
 productList.serialize(); // "/product"
@@ -78,7 +80,7 @@ viewSchema.serialize({ view: 'noticeDetail' }); // ✅ "weverseshop://weversesho
 
 ### Integration with `react-router`
 
-This version(v1.0.0) is integration to (react-router-v6)[https://reactrouter.com/docs/en/v6]
+This version(v1.0.0) is integration to [react-router-v6](https://reactrouter.com/docs/en/v6)
 
 ```tsx
 import React from 'react';
