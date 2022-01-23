@@ -1,7 +1,7 @@
 {
   "name": "uri-manager",
-  "version": "0.0.3",
-  "description": "Create URI schema and serialize type safe",
+  "version": "1.0.0",
+  "description": "Create URI schema and serialize type safe (support subpath, relative path)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -24,9 +24,7 @@
     "url": "https://github.com/minuukang/uri-manager/issues"
   },
   "homepage": "https://github.com/minuukang/uri-manager#readme",
-  "dependencies": {
-    "path-to-regexp": "^6.2.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/jest": "^26.0.24",
     "@typescript-eslint/eslint-plugin": "^4.6.0",
@@ -37,6 +35,6 @@
     "jest": "^27.0.6",
     "prettier": "^2.3.2",
     "ts-jest": "^27.0.4",
-    "typescript": "^4.3.5"
+    "typescript": "^4.5.5"
   }
 }
