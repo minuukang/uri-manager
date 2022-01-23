@@ -1,43 +1,39 @@
 # uri-manager
 
-URI serialize and match data use `path-to-regexp` and use safety type!
+URI serialize and match data, use safety type!
+Successfully integration to (react-router-v6)[https://reactrouter.com/docs/en/v6]!
 
 ## Example
 
 ```ts
 import { URISchema } from 'uri-manager';
 
-const productList = new URISchema<{ search?: string; }>('/product');
-const productDetail = new URISchema('/product/:productId(\\d+)');
+const product = new URISchema('/product');
+const productList = product.createSubPath<{ search?: string; }>('/list');
+const productDetail = product.createSubPath('/product/:productId');
 
 // serialize
 productList.serialize(); // "/product"
 productList.serialize({ search: 'keyword' }); // "/product?search=keyword"
-productDetail.serailize({ productId: 10 }); // "product/10"
+productDetail.serailize({ productId: '10' }); // "product/10"
 
 // match
 productDetail.match('/foo/bar'); // null
 productDetail.match('/product/15'); // { productId: 15 }
+
+// deep sub path serialize
+const media = new URISchema('/media');
+const mediaDetail = media.createSubPath('/:mediaId');
+const mediaDetailComments = mediaDetail.createSubPath('/comments');
+const mediaDetailCommentDetail = mediaDetailComments.createSubPath('/:commentId');
+
+media.serialize(); // "/media"
+mediaDetail.serialize({ mediaId: '10' }); // "/media/10"
+mediaDetailComments.serialize({ mediaId: '15' }); // "/media/15/comments"
+mediaDetailCommentDetail.serialize({ mediaId: '20', commentId: '25' }); // "/media/20/comments/25"
 ```
 
 ## Features
-
-### Automatic type check from path!
-
-```ts
-import { URISchema } from 'uri-manager';
-
-const filter = new URISchema('/filter/:category?');
-
-filter.serialize(); // ✅ "/filter"
-filter.serialize({ category: 'foo' }); // ✅ "/filter/foo"
-
-const productDetail = new URISchema('/product/:productId(\\d+)');
-
-productDetail.serialize(); // ❎ TypeError: Expected 1 arguments, but got 0.
-productDetail.serialize({ productId: 'foo' }); // ❎ TypeError: Type 'string' is not assignable to type 'number'
-productDetail.serialize({ productId: 10 }); // ✅ "/product/10"
-```
 
 ### Manually definition type with query string
 
@@ -49,7 +45,7 @@ const productList = new URISchema<{ search?: string; }>('/product');
 productList.serialize(); // ✅ "/product"
 productList.serialize({ search: 'foo' }); // ✅ "/product?search=foo"
 
-const productDetail = new URISchema<ParamsFromPath<'/product/:productId(\\d+)'> & { tag: string }>('/product/:productId(\\d+)');
+const productDetail = new URISchema<ParamsFromPath<'/product/:productId'> & { tag: string }>('/product/:productId(\\d+)');
 
 productDetail.serialize({ productId: 10, tag: 'bar' }); // ✅ "/product/10?tag=bar"
 ```
@@ -82,25 +78,38 @@ viewSchema.serialize({ view: 'noticeDetail' }); // ✅ "weverseshop://weversesho
 
 ### Integration with `react-router`
 
+This version(v1.0.0) is integration to (react-router-v6)[https://reactrouter.com/docs/en/v6]
+
 ```tsx
 import React from 'react';
-import { Route, Switch, useRouteMatch } from 'react-router';
-import { URISchema, GetURISchemaParams } from 'uri-manager';
+import { Route, Routes, useParams, Outlet } from 'react-router';
+import { URISchema, GetURISchemaParamKeys } from 'uri-manager';
 
-const productDetailRoute = new URISchema('/product/:productId(\\d+)');
+const product = new URISchema('/product');
+const productDetailRoute = product.createSubPath('/product/:productId');
 
 const ProductDetail = () => {
-  const match = useRouteMatch<GetURISchemaParams<typeof productDetailRoute>>();
+  const { productId } = useParams<GetURISchemaParamKeys<typeof productDetailRoute>>();
   return (
-    <h1>Product detail id : {match?.params.productId}</h1>
+    <h1>Product detail id : {productId}</h1>
   );
 };
 
+declare function ProductLayout(): React.FC;
+declare function ProductList(): React.FC;
+
 const App = () => {
   return (
-    <Switch>
-      <Route path={productDetailRoute.template} component={ProductDetail} />
-    </Switch>
+    <Routes>
+      <Route path={product.relativePath} element={
+        <ProductLayout>
+          <Outlet />
+        </ProductLayout>
+      }>
+        <Route index element={<ProductList />} />
+        <Route path={productDetailRoute.relativePath} element={<ProductDetail />} />
+      </Route>
+    </Routes>
   )
 };
 ```
